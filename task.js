@@ -22,14 +22,13 @@ exports.handler = async function (event) {
                 response = await addBook(JSON.parse(event.body));
                 break;
             case event.httpMethod === 'PATCH' && event.path === bookPath:
-                const requestBody = JSON.parse(event.body);
+                var requestBody=JSON.parse(event.body);
                 response = await updateBook(requestBody.bookId,requestBody.updateKey,requestBody.updateValue);
                 break;
             case event.httpMethod === 'DELETE' && event.path === bookPath:
                 response = await deleteBook(event.queryStringParameters.bookId);
                 break;
             default:
-               // response =  await updateBook(event);
                 response = buildResponse(404, '404 Not Found');
         }
         return response;
@@ -109,11 +108,11 @@ async function updateBook(bookId,updateKey,updateValue) {
      // console.log("===============#################BOOK++++++++++++++++ID")
     return buildResponse(400,"Invalid  bookId");
   }
-   if(updateKey == null || updateKey ==""){
+   if(updateKey === null || updateKey === ""){
      // console.log("===============#################BOOK++++++++++++++++ID")
     return buildResponse(400, "Invalid  updateKey");
   }
-    if(updateValue == null || updateValue ==""){
+    if(updateValue === null || updateValue === ""){
      // console.log("===============#################BOOK++++++++++++++++ID")
     return buildResponse(400, "Invalid  updateValue");
   }
@@ -140,6 +139,7 @@ async function updateBook(bookId,updateKey,updateValue) {
         return buildResponse(error.statusCode, JSON.stringify(error, null, 2));
     })
 }
+
 async function deleteBook(bookId) {
      if(bookId == null || bookId <= 0){
      // console.log("===============#################BOOK++++++++++++++++ID")
